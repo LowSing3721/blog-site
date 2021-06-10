@@ -8,7 +8,7 @@ try:
         port=3306,
         user='root',
         passwd='root',
-        db='blog',
+        db='blogsite',
     )
 except MySQLError:
     sys.exit(1)
