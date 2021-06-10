@@ -19,7 +19,6 @@ services:
     image: nginx:1.20.0
     container_name: blog_nginx
     volumes:
-      - ./compose/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./compose/nginx/blogsite.conf:/etc/nginx/conf.d/blogsite.conf
 #      - ./blogsite/static:/usr/share/nginx/html/static
     ports:
@@ -32,9 +31,6 @@ services:
     container_name: blog_site
     volumes:
       - ./blogsite:/blogsite
-#      - ./requirements.txt:/requirements.txt
-#      - ./compose/blogsite/check_mysql.py:/check_mysql.py
-#      - ./compose/blogsite/start.sh:/start.sh
     ports:
       - "8000:8000"
     command: /start.sh
