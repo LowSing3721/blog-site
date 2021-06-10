@@ -1,17 +1,20 @@
 """生产环境配置"""
+import os
+
 from .base import *
 
-SECRET_KEY = 'django-insecure-3+3_+!d12=qn38e&#jv-$m&!tia59mk7(7qu_ns%ec!r_8obqe'
+
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'blogsite',
-        'HOST': '127.0.0.1',
+        'HOST': 'mysql',
         'PORT': 3306,
         'USER': 'root',
         'PASSWORD': 'root',

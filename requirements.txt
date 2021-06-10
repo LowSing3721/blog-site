@@ -14,6 +14,7 @@ django-js-asset==1.2.2
 django-redis==5.0.0
 djangorestframework==3.12.4
 Fabric3==1.14.post1
+gunicorn==20.1.0
 idna==2.10
 invoke==1.5.0
 itypes==1.2.0

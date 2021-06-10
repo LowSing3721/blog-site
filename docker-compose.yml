@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:8.0.25
+    container_name: blog_mysql
+    command: ["--default-authentication-plugin=mysql_native_password", "--mysqlx=0"]
+    volumes:
+      - ./compose/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+#      - ./compose/mysql/my.sql:/docker-entrypoint-initdb.d/my.sql
+#      - ./compose/mysql/db:/var/lib/mysql
+    ports:
+    - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=blogsite
+      - MYSQL_ROOT_PASSWORD=root
+
+  nginx:
+    image: nginx:1.20.0
+    container_name: blog_nginx
+    volumes:
+      - ./compose/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./compose/nginx/blogsite.conf:/etc/nginx/conf.d/blogsite.conf
+#      - ./blogsite/static:/usr/share/nginx/html/static
+    ports:
+      - "8888:8888"
+
+  blogsite:
+    build:
+      context: .
+      dockerfile: compose/blogsite/Dockerfile
+    container_name: blog_site
+    volumes:
+      - ./blogsite:/blogsite
+    ports:
+      - "8000:8000"
+    command: /start.sh
+    depends_on:
+      - mysql
+      - nginx
