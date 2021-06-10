@@ -20,7 +20,7 @@ services:
     container_name: blog_nginx
     volumes:
       - ./compose/nginx/blogsite.conf:/etc/nginx/conf.d/blogsite.conf
-#      - ./blogsite/static:/usr/share/nginx/html/static
+      - ./static:/usr/share/nginx/html/static
     ports:
       - "8888:8888"
 
