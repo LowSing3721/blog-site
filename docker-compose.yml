@@ -28,10 +28,13 @@ services:
   blogsite:
     build:
       context: .
-      dockerfile: compose/blogsite/Dockerfile
+      dockerfile: ./compose/blogsite/Dockerfile
     container_name: blog_site
     volumes:
       - ./blogsite:/blogsite
+      - ./requirements.txt:/requirements.txt
+      - ./compose/blogsite/check_mysql.py /check_mysql.py
+      - ./compose/blogsite/start.sh /start.sh
     ports:
       - "8000:8000"
     command: /start.sh

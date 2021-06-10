@@ -13,11 +13,8 @@ RUN sed -i "s/deb.debian.org/mirrors.aliyun.com/g" /etc/apt/sources.list && \
     apt-get install -y gcc && \
     apt-get install -y default-libmysqlclient-dev
 # 安装依赖
-RUN pip install --no-cache-dir -r requirement.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
-# 检查MySQL进程启动完毕脚本
-COPY compose/blogsite/check_mysql.py /check_mysql.py
-# 启动脚本
-COPY compose/blogsite/start.sh /start.sh
+RUN pip install --no-cache-dir -r /requirement.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
+# 去windows空白
 RUN sed -i 's/\r//' /start.sh && \
     chmod +x /start.sh && \
     sed -i 's/\r//' /check_mysql.py
