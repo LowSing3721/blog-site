@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% load comment_block %}
+
+{% block title %}
+  {{ post.title }}
+{% endblock title %}
+
+{% block main %}
+  {% if post %}
+    <h1 class="card-title">{{ post.title }}</h1>
+    <div>
+      <span>
+        <a href="{% url 'author-list' post.owner.id %}">{{ post.owner.username }}</a>
+      </span>
+      <span>
+        {{ post.created_time }}
+      </span>
+      <span>
+        分类:<a href="{% url 'category-list' post.category.id %}">{{ post.category.name }}</a>
+      </span>
+    </div>
+    <br/>
+    <br/>
+    <p>{{ post.content_html | safe }}</p>
+  {% else %}
+    <p>不存在的文章</p>
+  {% endif %}
+
+  {% show_comment request.path %}
+
+{% endblock main %}

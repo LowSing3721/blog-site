@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>{% block title %} 父模板 {% endblock title %}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-tofit=no">
+	<link href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+<!--	<link href="{% static 'bootstrap.min.css' %}" rel="stylesheet">-->
+</head>
+<body>
+
+	<div class="container head">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<a class="navbar-brand" href="/">首页</a>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					{% for cate in navs %}
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'category-list' cate.id %}">{{ cate.name }}</a>
+						</li>
+          {% endfor %}
+				</ul>
+				<form class="form-inline my-2 my-lg-0" action="{% url 'search' %}" method="GET">
+					<input class="form-control mr-sm-2" type="search" placeholder="Search"
+					       aria-label="Search" name="keyword" value="{{ keyword }}" />
+					<button class="btn btn-outline-success" type="submit">搜索</button>
+				</form>
+				<a href="{% url 'links' %}">友情链接</a>
+			</div>
+		</nav>
+		<div class="jumbotron">
+			<h1 class="display-4">Blogsite</h1>
+			<p class="lead">基于Django的多人博客系统</p>
+		</div>
+	</div>
+
+	<div class="container main">
+		<div class="row">
+			<div class="col-9 post-list">
+				{% block main %}
+        {% endblock main %}
+			</div>
+			<div class="col-3 sidebar">
+				{% block sidebar %}
+					{% for sidebar in sidebars %}
+						<div class="card">
+							<div class="card-body">
+								<h4>{{ sidebar.title }}</h4>
+								<p>{{ sidebar.content_html }}</p>
+							</div>
+						</div>
+          {% endfor %}
+        {% endblock sidebar %}
+			</div>
+		</div>
+	</div>
+
+	<footer class="footer">
+		{% block footer %}
+			<div class="container">
+				<hr/>
+				<nav class="nav category">
+					{% for cate in categories %}
+						<a href="{% url 'category-list' cate.id %}" class="nav-link">{{ cate.name }}</a>
+			    {% endfor %}
+				</nav>
+			</div>
+			<div class="container power">
+				<span class="text-muted">Power by Wang</span>
+			</div>
+    {% endblock footer %}
+	</footer>
+
+</body>
+</html>

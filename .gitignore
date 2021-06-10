@@ -1,0 +1,11 @@
+blogsite-venv
+dist
+build
+*.pyc
+*.swp
+*.sqlite3
+*.log
+*.egg
+*.egg-info
+.*
+!.gitignore
