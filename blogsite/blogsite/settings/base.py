@@ -89,10 +89,7 @@ USE_TZ = True
 
 # 静态文件配置
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    join(BASE_DIR, 'static')
-]
-STATIC_ROOT = '/home/wang/new/static/'
+STATIC_ROOT = join(BASE_DIR.parent.parent, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
