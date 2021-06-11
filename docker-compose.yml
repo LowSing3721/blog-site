@@ -44,6 +44,7 @@ services:
 
   web:
     build:
+      context: .
       dockerfile: compose/blogsite/Dockerfile
     container_name: blogsite
     volumes:

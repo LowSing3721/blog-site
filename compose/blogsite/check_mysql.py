@@ -4,10 +4,10 @@ from MySQLdb._exceptions import MySQLError
 
 try:
     connect(
-        host='mysql',
+        host='db',
         port=3306,
-        user='root',
-        passwd='root',
+        user='wang',
+        passwd='wang',
         db='blogsite',
     )
 except MySQLError:

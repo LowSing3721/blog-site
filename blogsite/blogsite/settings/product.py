@@ -16,8 +16,8 @@ DATABASES = {
         'NAME': 'blogsite',
         'HOST': 'db',
         'PORT': 3306,
-        'USER': os.environ.get('DJANGO_SECRET_KEY'),
-        'PASSWORD': os.environ.get('DJANGO_SECRET_KEY'),
+        'USER': 'wang',
+        'PASSWORD': 'wang',
         'CONN_MAX_AGE': 5 * 60,
         'OPTIONS': {
             'charset': 'utf8mb4',
