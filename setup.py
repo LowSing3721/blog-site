@@ -18,7 +18,7 @@ setup(
     install_requires=[
         'Django==3.2.4',
         'gunicorn==20.1.0',
-        'supervisor==4.2.2',
+        # 'supervisor==4.2.2',
         # 'xadmin==2.0.1',
         'mysqlclient==2.0.3',
         'django-ckeditor==6.1.0',
@@ -38,7 +38,7 @@ setup(
     # },
     scripts=['blogsite/manage.py'],
     entry_points={'console_scriptss': [
-        'blogsite_manage = manage:main'
+        'blogsite_manage = blogsite.manage:main'
     ]},
     classifiers=[
         # 开发状态

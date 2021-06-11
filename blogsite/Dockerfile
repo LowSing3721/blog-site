@@ -17,19 +17,13 @@ RUN sed -i "s/deb.debian.org/mirrors.aliyun.com/g" /etc/apt/sources.list && \
     apt-get install -y default-libmysqlclient-dev
 # 更新pip版本
 RUN /usr/local/bin/python -m pip install --upgrade pip
-# 依赖文件
-COPY /requirements.txt /requirements.txt
-# 安装依赖
-RUN pip install --no-cache-dir -r /requirements.txt -i https://pypi.douban.com/simple
-# 启动脚本
-COPY /compose/blogsite/check_mysql.py /check_mysql.py
-# MySQL服务检查脚本
-COPY /compose/blogsite/start.sh /start.sh
-# 移除windows回车符
-RUN sed -i 's/\r//' /start.sh && \
-    chmod +x /start.sh && \
-    sed -i 's/\r//' /check_mysql.py
 # 工作目录
 WORKDIR /var/www/html/blogsite
+# 安装依赖
+RUN pip install --no-cache-dir -r requirements.txt -i https://pypi.douban.com/simple
+# 移除windows回车符
+RUN sed -i 's/\r//' start.sh && \
+    chmod +x start.sh && \
+    sed -i 's/\r//' check_mysql.py
 # 入口命令
-ENTRYPOINT /start.sh
+ENTRYPOINT ./start.sh

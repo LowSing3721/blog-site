@@ -12,7 +12,7 @@ done
 python manage.py collectstatic --noinput &&
 python manage.py makemigrations &&
 python manage.py migrate &&
-gunicorn blogsite.wsgi:application -w 4 -k gthread -b 0.0.0.0:8000 --chdir=/blogsite &&
+gunicorn blogsite.wsgi:application -w 4 -k gthread -b 0.0.0.0:8000 &&
 # 使容器保持开启状态
 tail -f /dev/null
 
