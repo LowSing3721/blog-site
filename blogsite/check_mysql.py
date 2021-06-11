@@ -4,7 +4,7 @@ from MySQLdb._exceptions import MySQLError
 
 try:
     connect(
-        host='db',
+        host='mysql',
         port=3306,
         user='wang',
         passwd='wang',

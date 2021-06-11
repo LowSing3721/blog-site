@@ -14,18 +14,26 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'blogsite',
-        'HOST': 'db',
+        'HOST': 'mysql',
         'PORT': 3306,
         'USER': 'wang',
         'PASSWORD': 'wang',
         'CONN_MAX_AGE': 5 * 60,
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-        },
     }
 }
 
-# 日志配置
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://redis:6379/1",
+        "TIMEOUT": 60 * 5,
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "PASSWORD": "wang",
+        }
+    }
+}
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

@@ -1,26 +1,29 @@
 version: '3'
 
 volumes:
-  db_vol:
+  mysql_vol:
+  redis_vol:
   static_vol:
 
 networks:
   nginx_network:
     driver: bridge
-  db_network:
+  mysql_network:
+    driver: bridge
+  redis_network:
     driver: bridge
 
 services:
-  db:
+  mysql:
     image: mysql:8.0.25
     volumes:
-      - db_vol:/var/lib/mysql:rw
+      - mysql_vol:/var/lib/mysql:rw
       - ./compose/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./compose/mysql/init:/docker-entrypoint-initdb.d
     env_file:
       - compose/mysql/.env
     networks:
-      - db_network
+      - mysql_network
     ports:
       - "3306:3306"
     restart: always
@@ -44,6 +47,18 @@ services:
     restart: always
     command: ["nginx", "-g", "daemon off;"]
 
+  redis:
+    image: redis:6.0.13
+    volumes:
+    - redis_vol:/data
+    - ./compose/redis/redis.conf:/etc/redis/redis.conf
+    networks:
+      - redis_network
+    ports:
+    - "6379:6379"
+    restart: always
+    command: ["redis-server", "/etc/redis/redis.conf"]
+
   web:
     build: ./blogsite
     container_name: blogsite
@@ -51,10 +66,11 @@ services:
       - static_vol:/var/www/html/blogsite/static
       - ./blogsite:/var/www/html/blogsite
     networks:
-      - db_network
+      - mysql_network
       - nginx_network
+      - redis_network
     depends_on:
-      - db
+      - mysql
     expose:
       - "8000"
     restart: always

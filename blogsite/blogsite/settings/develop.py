@@ -14,18 +14,6 @@ DATABASES = {
     }
 }
 
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": "redis://192.168.28.128:6379/1",
-#         "TIMEOUT": 60 * 5,
-#         "OPTIONS": {
-#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-#             "PASSWORD": "test",
-#         }
-#     }
-# }
-
 # 性能排查工具django-debug-toolbar配置
 INSTALLED_APPS += [
     'debug_toolbar'

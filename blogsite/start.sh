@@ -2,7 +2,7 @@
 
 # 等待mysql容器完全启动
 function check_mysql(){
-    python /check_mysql.py
+    python ./check_mysql.py
 }
 until check_mysql; do
     echo "Waiting for the MySQL Server......"
