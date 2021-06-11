@@ -1,15 +1,19 @@
 #!/bin/bash
 
-#sleep 10  # 等待mysql容器完全启动
-# 此处可以使用netcat命令替代
+# 等待mysql容器完全启动
 function check_mysql(){
     python /check_mysql.py
 }
 until check_mysql; do
-    echo "MySQL is not running yet"
-    sleep 1
+    echo "Waiting for the MySQL Server......"
+    sleep 3
 done
+# 启动Django
+python manage.py collectstatic --noinput &&
+python manage.py makemigrations &&
+python manage.py migrate &&
+gunicorn blogsite.wsgi:application -w 4 -k gthread -b 0.0.0.0:8000 --chdir=/blogsite &&
+# 使容器保持开启状态
+tail -f /dev/null
 
-python manage.py makemigrations
-python manage.py migrate
-gunicorn blogsite.wsgi:application -w 4 -k gthread -b 0.0.0.0:8000 --chdir=/blogsite
+exec "$@"

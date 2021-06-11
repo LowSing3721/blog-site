@@ -1,39 +1,61 @@
 version: '3'
 
+volumes:
+  db_vol:
+  static_vol:
+
+networks:
+  nginx_network:
+    driver: bridge
+  db_network:
+    driver: bridge
+
 services:
-  mysql:
+  db:
     image: mysql:8.0.25
-    container_name: blog_mysql
-    command: ["--default-authentication-plugin=mysql_native_password", "--mysqlx=0"]
     volumes:
+      - db_vol:/var/lib/mysql:rw
       - ./compose/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
-#      - ./compose/mysql/my.sql:/docker-entrypoint-initdb.d/my.sql
-#      - ./compose/mysql/db:/var/lib/mysql
+      - ./compose/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    env_file:
+      - compose/mysql/.env
+    networks:
+      - db_network
     ports:
-    - "3306:3306"
-    environment:
-      - MYSQL_DATABASE=blogsite
-      - MYSQL_ROOT_PASSWORD=root
+      - "3306:3306"
+    restart: always
 
   nginx:
     image: nginx:1.20.0
-    container_name: blog_nginx
     volumes:
+      - static_vol:/usr/share/nginx/html/static
       - ./compose/nginx/blogsite.conf:/etc/nginx/conf.d/blogsite.conf
-      - ./static:/usr/share/nginx/html/static
-    ports:
-      - "8888:8888"
-
-  blogsite:
-    build:
-      context: .
-      dockerfile: ./compose/blogsite/Dockerfile
-    container_name: blog_site
-    volumes:
-      - ./blogsite:/blogsite
-    ports:
-      - "8000:8000"
-    command: /start.sh
+    networks:
+      - nginx_network
     depends_on:
-      - mysql
-      - nginx
+      - web
+    ports:
+      - "80:80"
+      - "443:443"
+    expose:
+      - "80"
+    restart: always
+    command: ["nginx", "-g", "daemon off;"]
+
+  web:
+    build:
+      dockerfile: compose/blogsite/Dockerfile
+    container_name: blogsite
+    volumes:
+      - static_vol:/var/www/html/blogsite/static
+      - ./blogsite:/var/www/html/blogsite
+    networks:
+      - db_network
+      - nginx_network
+    depends_on:
+      - db
+    expose:
+      - "8000"
+    restart: always
+    tty: true
+    stdin_open: true

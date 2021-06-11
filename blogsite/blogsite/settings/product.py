@@ -14,10 +14,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'blogsite',
-        'HOST': 'mysql',
+        'HOST': 'db',
         'PORT': 3306,
-        'USER': 'root',
-        'PASSWORD': 'root',
+        'USER': os.environ.get('DJANGO_SECRET_KEY'),
+        'PASSWORD': os.environ.get('DJANGO_SECRET_KEY'),
         'CONN_MAX_AGE': 5 * 60,
         'OPTIONS': {
             'charset': 'utf8mb4',
